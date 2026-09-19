@@ -75,10 +75,13 @@ const AdminLayout = ({ children }) => {
             <Menu size={24} />
           </button>
           <div className="flex items-center space-x-4">
-            <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white font-bold">
-              SA
+            <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white font-bold uppercase">
+              {user.name ? user.name.substring(0, 2) : 'A'}
             </div>
-            <span className="font-medium hidden sm:block">Super Admin</span>
+            <div className="hidden sm:block">
+              <span className="font-medium block leading-tight">{user.name || 'Admin User'}</span>
+              <span className="text-xs text-gray-500">{isSuperAdmin ? 'Super Admin' : (user.role || 'User')}</span>
+            </div>
           </div>
         </header>
 
