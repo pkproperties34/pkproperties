@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1A1A1A;
+  --color-primary-light: #2D2D2D;
+  --color-accent: #D4AF37;
+  --color-accent-light: #F3E5AB;
+  
+  /* Sattva Lago inspired colors */
+  --color-sattva-bg: #E5F5FA;
+  --color-sattva-btn: #353D93;
+  --color-sattva-btn-hover: #262D75;
+  --color-sattva-footer: #303787;
+  
+  --color-background: #F8F9FA;
+  --color-surface: #FFFFFF;
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-sattva-bg text-primary antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-primary font-bold;
+  }
+}
+
+@layer utilities {
+  .text-gold {
+    @apply text-accent;
+  }
+  .bg-gold {
+    @apply bg-accent text-white;
+  }
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-md border border-white/40 shadow-xl rounded-md;
+  }
+}
