@@ -16,7 +16,16 @@ const siteContentSchema = new mongoose.Schema({
       facebook: { type: String, default: '#' }
     },
     maintenanceMode: { type: Boolean, default: false },
-    workingHours: { type: String, default: 'Monday - Saturday: 9:00 AM - 7:00 PM\nSunday: 10:00 AM - 4:00 PM' }
+    workingHours: { type: String, default: 'Monday - Saturday: 9:00 AM - 7:00 PM\nSunday: 10:00 AM - 4:00 PM' },
+    whatsapp: {
+      number: { type: String, default: '919876543210' },
+      defaultMessage: { type: String, default: 'Hello, I am interested in your properties.' }
+    },
+    visibility: {
+      projects: { type: Boolean, default: true },
+      properties: { type: Boolean, default: true },
+      plans: { type: Boolean, default: true }
+    }
   },
 
   hero: {
@@ -25,6 +34,11 @@ const siteContentSchema = new mongoose.Schema({
     logoTitleSecond: { type: String, default: 'PROPERTIES' },
     mainTitle: { type: String, default: 'Neopolis, Kokapet' },
     subtitle: { type: String, default: '3, 3.5, and 4 BHK Residences' }
+  },
+
+  eoi: {
+    title: { type: String, default: "EOI's Open Now" },
+    subtitle: { type: String, default: "To express your interest and receive priority access, please fill out the form below. Our property experts will contact you shortly." }
   },
 
   highlights: {

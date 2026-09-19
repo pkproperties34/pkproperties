@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, EffectFade, Autoplay } from 'swiper/modules';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -104,15 +105,29 @@ const Home = () => {
   return (
     <div className="w-full relative bg-sattva-bg font-sans pt-20 overflow-hidden">
       
-      {/* Sticky Right Tab */}
-      <motion.div 
-        initial={{ x: 100 }} animate={{ x: 0 }} transition={{ delay: 1, duration: 0.5 }}
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-40"
-      >
-        <div className="bg-sattva-btn text-white py-4 px-2 tracking-widest text-sm font-semibold uppercase cursor-pointer hover:bg-sattva-btn-hover transition flex items-center justify-center transform origin-right shadow-2xl" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed', height: '200px' }}>
-          Book Your Site Visit
-        </div>
-      </motion.div>
+      {/* Floating Action Buttons (Bottom Right) */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end space-y-4">
+        {/* WhatsApp Button */}
+        <motion.a 
+          href={`https://wa.me/${data.global.whatsapp?.number?.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(data.global.whatsapp?.defaultMessage || '')}`}
+          target="_blank" rel="noopener noreferrer"
+          initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.2, type: 'spring' }}
+          className="bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition hover:scale-110 flex items-center justify-center w-14 h-14"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.663-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        </motion.a>
+        {/* Book Site Visit Pulsing Button */}
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1, type: 'spring' }}>
+          <motion.a 
+            href="#eoi-form"
+            animate={{ scale: [1, 1.15, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="bg-primary text-white py-3 px-6 rounded-full shadow-lg font-bold uppercase tracking-wider text-xs sm:text-sm hover:bg-primary-light flex items-center origin-center block"
+          >
+            Book Your Site Visit
+          </motion.a>
+        </motion.div>
+      </div>
 
       {/* Hero Section */}
       <section id="overview" className="relative h-screen w-full flex items-center justify-center overflow-hidden">
@@ -145,23 +160,17 @@ const Home = () => {
           </motion.p>
         </div>
 
-        {/* Floating Side Button */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20">
-          <button className="bg-sattva-btn hover:bg-sattva-btn-hover text-white text-sm font-bold uppercase tracking-widest py-3 px-6 origin-right -rotate-90 translate-x-[42%] translate-y-[200%] md:translate-y-0 transition flex items-center shadow-2xl">
-             Book Your Site Visit <span className="ml-2 rotate-90">▼</span>
-          </button>
-        </div>
       </section>
 
       {/* EOI Form Overlay */}
-      <section className="relative z-30 -mt-24 mb-16 px-4">
+      <section id="eoi-form" className="relative z-30 -mt-24 mb-16 px-4">
         <motion.div 
           initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false }} transition={{ duration: 0.6 }}
-          className="max-w-5xl mx-auto bg-white shadow-2xl p-8 md:p-10 border-t-4 border-[#3AB0E2]"
+          className="max-w-5xl mx-auto glass-card p-8 md:p-10 border-t-4 border-accent"
         >
-          <h3 className="text-xl font-bold text-center text-sattva-btn mb-4">EOI's Open Now</h3>
-          <p className="text-sm text-center text-gray-600 mb-8 font-medium max-w-2xl mx-auto">
-            To express your interest and receive priority access, please fill out the form below. Our property experts will contact you shortly.
+          <h3 className="text-2xl md:text-3xl font-serif font-bold text-center text-primary mb-4">{data.eoi?.title || "EOI's Open Now"}</h3>
+          <p className="text-sm md:text-base text-center text-gray-700 mb-8 font-medium max-w-2xl mx-auto">
+            {data.eoi?.subtitle || "To express your interest and receive priority access, please fill out the form below. Our property experts will contact you shortly."}
           </p>
           
           {status === 'success' ? (
@@ -189,7 +198,7 @@ const Home = () => {
                 <input type="tel" name="mobileNo" value={formData.mobileNo} onChange={handleChange} required placeholder="Mobile No" className="w-full px-2 py-3 border-b-2 border-gray-200 focus:border-sattva-btn focus:outline-none bg-transparent transition-colors" />
               </div>
               <div className="md:col-span-2 pt-2">
-                <button type="submit" disabled={status === 'loading'} className="w-full bg-sattva-btn hover:bg-sattva-btn-hover text-white font-bold py-4 text-sm uppercase tracking-widest transition disabled:opacity-70 disabled:cursor-not-allowed shadow-md">
+                <button type="submit" disabled={status === 'loading'} className="w-full bg-primary hover:bg-primary-light text-white font-bold py-4 text-sm uppercase tracking-widest transition disabled:opacity-70 disabled:cursor-not-allowed shadow-md rounded-md">
                   {status === 'loading' ? 'Submitting...' : 'Express Your Interest'}
                 </button>
                 {status === 'error' && <p className="text-red-500 text-center mt-3 text-sm font-medium">An error occurred. Please try again.</p>}
@@ -198,6 +207,34 @@ const Home = () => {
           )}
         </motion.div>
       </section>
+
+      {/* Featured Projects & Properties Links */}
+      {(data.global.visibility?.projects !== false || data.global.visibility?.properties !== false) && (
+        <section className="py-12 bg-white relative z-20">
+          <div className="container mx-auto px-6 lg:px-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {data.global.visibility?.projects !== false && (
+                <Link to="/projects" className="group block relative overflow-hidden rounded-2xl shadow-xl h-64">
+                  <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80" alt="Projects" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex flex-col justify-end p-8">
+                    <h3 className="text-3xl font-serif font-bold text-white mb-2">Explore Projects</h3>
+                    <p className="text-accent flex items-center font-medium">View our ongoing developments <span className="ml-2 group-hover:translate-x-2 transition-transform">→</span></p>
+                  </div>
+                </Link>
+              )}
+              {data.global.visibility?.properties !== false && (
+                <Link to="/properties" className="group block relative overflow-hidden rounded-2xl shadow-xl h-64">
+                  <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80" alt="Properties" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex flex-col justify-end p-8">
+                    <h3 className="text-3xl font-serif font-bold text-white mb-2">Explore Properties</h3>
+                    <p className="text-accent flex items-center font-medium">Find your dream home <span className="ml-2 group-hover:translate-x-2 transition-transform">→</span></p>
+                  </div>
+                </Link>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Heading */}
       <section className="text-center py-20 px-4 bg-sattva-bg overflow-hidden relative">
@@ -234,11 +271,11 @@ const Home = () => {
             {data.highlights.items.map((highlight, index) => {
               const IconComponent = IconMap[highlight.iconName] || Star;
               return (
-                <motion.div variants={fadeInUp} key={index} className="bg-white/20 backdrop-blur-lg border border-white/30 p-10 flex flex-col items-center justify-center text-center min-h-[220px] transition duration-300 hover:bg-white/30 cursor-pointer">
-                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-sattva-btn mb-6 shadow-sm">
+                <motion.div variants={fadeInUp} key={index} className="glass-dark p-10 flex flex-col items-center justify-center text-center min-h-[220px] transition duration-300 hover:-translate-y-2 cursor-pointer">
+                  <div className="w-20 h-20 bg-accent rounded-full flex items-center justify-center text-primary mb-6 shadow-lg">
                     <IconComponent size={36} strokeWidth={1.5}/>
                   </div>
-                  <h3 className="text-white font-bold text-lg leading-snug px-2">{highlight.text}</h3>
+                  <h3 className="text-white font-serif font-bold text-xl leading-snug px-2">{highlight.text}</h3>
                 </motion.div>
               );
             })}
@@ -300,22 +337,24 @@ const Home = () => {
       )}
 
       {/* Floor Plans */}
-      <section id="plans" className="py-24 bg-sattva-bg overflow-hidden">
-        <div className="container mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center gap-12">
-          <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false, amount: 0.1 }} transition={{ duration: 0.8 }} className="md:w-1/2 relative">
-             <img src={data.floorPlans.backgroundImage} alt="Master Plan" className="w-full object-cover shadow-lg" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false, amount: 0.1 }} transition={{ duration: 0.8 }} className="md:w-1/2">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-black mb-6 leading-tight">{data.floorPlans.titleLine1} <br/>{data.floorPlans.titleLine2}</h2>
-            <p className="text-gray-800 font-medium text-base leading-relaxed mb-6">{data.floorPlans.description1}</p>
-            <p className="text-gray-800 font-medium text-base leading-relaxed mb-10">{data.floorPlans.description2}</p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-sattva-btn text-white px-8 py-3 text-sm font-bold tracking-widest uppercase hover:bg-sattva-btn-hover transition">Download Brochure</button>
-              <button className="bg-sattva-btn text-white px-8 py-3 text-sm font-bold tracking-widest uppercase hover:bg-sattva-btn-hover transition">Schedule A Site Visit</button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {data.global.visibility?.plans !== false && (
+        <section id="plans" className="py-24 bg-sattva-bg overflow-hidden">
+          <div className="container mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center gap-12">
+            <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false, amount: 0.1 }} transition={{ duration: 0.8 }} className="md:w-1/2 relative">
+               <img src={data.floorPlans.backgroundImage} alt="Master Plan" className="w-full object-cover shadow-lg" />
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false, amount: 0.1 }} transition={{ duration: 0.8 }} className="md:w-1/2">
+              <h2 className="text-4xl md:text-5xl font-extrabold text-black mb-6 leading-tight">{data.floorPlans.titleLine1} <br/>{data.floorPlans.titleLine2}</h2>
+              <p className="text-gray-800 font-medium text-base leading-relaxed mb-6">{data.floorPlans.description1}</p>
+              <p className="text-gray-800 font-medium text-base leading-relaxed mb-10">{data.floorPlans.description2}</p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button className="bg-primary text-white px-8 py-3 text-sm font-bold tracking-widest uppercase hover:bg-primary-light transition rounded-full shadow-md">Download Brochure</button>
+                <a href="#eoi-form" className="bg-accent text-primary px-8 py-3 text-sm font-bold tracking-widest uppercase hover:bg-yellow-400 transition text-center rounded-full shadow-md">Schedule A Site Visit</a>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* Vision Section */}
       <section id="vision" className="py-24 bg-white overflow-hidden">

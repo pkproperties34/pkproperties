@@ -21,7 +21,7 @@ const seedSuperAdmin = async () => {
     }
 
     // Seed SUPER ADMIN user
-    const superAdminEmail = 'ssaiprasanth333@gmail.com';
+    const superAdminEmail = 'ssprasanth333@gmail.com';
     let adminUser = await User.findOne({ email: superAdminEmail });
     
     if (!adminUser) {

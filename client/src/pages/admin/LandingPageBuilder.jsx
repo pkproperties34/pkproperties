@@ -50,7 +50,7 @@ const LandingPageBuilder = () => {
     try {
       const token = localStorage.getItem('adminToken');
       const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/upload`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` }
       });
       
       // Update nested state dynamically based on path
@@ -128,7 +128,23 @@ const LandingPageBuilder = () => {
         </div>
       </section>
 
-      {/* Highlights Section */}
+      
+      {/* EOI Section */}
+      <section className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+        <h4 className="font-bold text-lg text-gray-800 mb-4">Expression of Interest (EOI) Form</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Form Title</label>
+            <input type="text" value={content.eoi?.title || ''} onChange={(e) => handleChange('eoi.title', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-accent" />
+          </div>
+          <div className="md-col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Form Subtitle / Description</label>
+            <textarea rows="3" value={content.eoi?.subtitle || ''} onChange={(e) => handleChange('eoi.subtitle', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-accent" />
+          </div>
+        </div>
+      </section>
+
+{/* Highlights Section */}
       <section className="bg-gray-50 p-6 rounded-lg border border-gray-200">
         <h4 className="font-bold text-lg text-gray-800 mb-4">Project Highlights</h4>
         
@@ -277,51 +293,6 @@ const LandingPageBuilder = () => {
         </button>
       </section>
 
-      {/* FAQ Section */}
-      <section className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-        <h4 className="font-bold text-lg text-gray-800 mb-4">FAQ Manager</h4>
-        
-        <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">FAQ Background Image</label>
-            {content.faqs?.image && <img src={content.faqs.image} alt="FAQ BG" className="w-full h-32 object-cover rounded-md mb-2 border border-gray-300" />}
-            <label className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer max-w-xs">
-              {uploadingState['faqs.image'] ? <Loader2 size={16} className="animate-spin mr-2" /> : <Upload size={16} className="mr-2" />}
-              Replace Background Image
-              <input type="file" className="sr-only" onChange={(e) => handleUpload(e, 'faqs.image')} disabled={uploadingState['faqs.image']} />
-            </label>
-        </div>
-
-        <div className="space-y-4">
-          {content.faqs?.items?.map((item, idx) => (
-            <div key={idx} className="flex gap-4 items-start bg-white p-4 border border-gray-200 rounded-md relative">
-              <div className="flex-1 space-y-3">
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">Question</label>
-                  <input type="text" value={item.question} onChange={(e) => handleChange(`faqs.items.${idx}.question`, e.target.value)} className="w-full px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-accent" />
-                </div>
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">Answer</label>
-                  <textarea value={item.answer} onChange={(e) => handleChange(`faqs.items.${idx}.answer`, e.target.value)} rows="2" className="w-full px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-accent" />
-                </div>
-              </div>
-              <button onClick={() => {
-                const newItems = [...(content.faqs?.items || [])];
-                newItems.splice(idx, 1);
-                updateNestedState('faqs.items', newItems);
-              }} className="p-2 text-red-500 hover:bg-red-50 rounded-md self-center">
-                <Trash2 size={18} />
-              </button>
-            </div>
-          ))}
-          <button onClick={() => {
-            const currentItems = content.faqs?.items || [];
-            updateNestedState('faqs.items', [...currentItems, { question: 'New Question', answer: 'Answer here...' }]);
-          }} className="flex items-center text-sm font-medium text-accent hover:text-yellow-600">
-            <Plus size={16} className="mr-1" /> Add FAQ Item
-          </button>
-        </div>
-      </section>
-
       {/* Floor Plans Section */}
       <section className="bg-gray-50 p-6 rounded-lg border border-gray-200">
         <h4 className="font-bold text-lg text-gray-800 mb-4">Floor Plans & Walkthrough Section</h4>
@@ -354,7 +325,33 @@ const LandingPageBuilder = () => {
         </div>
       </section>
 
-      {/* Location Highlights Section */}
+      {/* Vision Section */}
+      <section className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+        <h4 className="font-bold text-lg text-gray-800 mb-4">Vision Section</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Background Image</label>
+            {content.vision?.image && <img src={content.vision.image} alt="Vision BG" className="w-full h-48 object-cover rounded-md mb-2 border border-gray-300" />}
+            <label className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer max-w-xs">
+              {uploadingState['vision.image'] ? <Loader2 size={16} className="animate-spin mr-2" /> : <Upload size={16} className="mr-2" />}
+              Replace Image
+              <input type="file" className="sr-only" onChange={(e) => handleUpload(e, 'vision.image')} disabled={uploadingState['vision.image']} />
+            </label>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Title Line 1</label>
+            <input type="text" value={content.vision?.titleLine1 || ''} onChange={(e) => handleChange('vision.titleLine1', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-accent" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Title Line 2</label>
+            <input type="text" value={content.vision?.titleLine2 || ''} onChange={(e) => handleChange('vision.titleLine2', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-accent" />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea rows="4" value={content.vision?.description || ''} onChange={(e) => handleChange('vision.description', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-accent" />
+          </div>
+        </div>
+      </section>{/* Location Highlights Section */}
       <section className="bg-gray-50 p-6 rounded-lg border border-gray-200">
         <h4 className="font-bold text-lg text-gray-800 mb-4">Location Highlights</h4>
         <div className="mb-6">
@@ -400,33 +397,52 @@ const LandingPageBuilder = () => {
         </div>
       </section>
 
-      {/* Vision Section */}
+      {/* FAQ Section */}
       <section className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-        <h4 className="font-bold text-lg text-gray-800 mb-4">Vision Section</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Background Image</label>
-            {content.vision?.image && <img src={content.vision.image} alt="Vision BG" className="w-full h-48 object-cover rounded-md mb-2 border border-gray-300" />}
+        <h4 className="font-bold text-lg text-gray-800 mb-4">FAQ Manager</h4>
+        
+        <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">FAQ Background Image</label>
+            {content.faqs?.image && <img src={content.faqs.image} alt="FAQ BG" className="w-full h-32 object-cover rounded-md mb-2 border border-gray-300" />}
             <label className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer max-w-xs">
-              {uploadingState['vision.image'] ? <Loader2 size={16} className="animate-spin mr-2" /> : <Upload size={16} className="mr-2" />}
-              Replace Image
-              <input type="file" className="sr-only" onChange={(e) => handleUpload(e, 'vision.image')} disabled={uploadingState['vision.image']} />
+              {uploadingState['faqs.image'] ? <Loader2 size={16} className="animate-spin mr-2" /> : <Upload size={16} className="mr-2" />}
+              Replace Background Image
+              <input type="file" className="sr-only" onChange={(e) => handleUpload(e, 'faqs.image')} disabled={uploadingState['faqs.image']} />
             </label>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title Line 1</label>
-            <input type="text" value={content.vision?.titleLine1 || ''} onChange={(e) => handleChange('vision.titleLine1', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-accent" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title Line 2</label>
-            <input type="text" value={content.vision?.titleLine2 || ''} onChange={(e) => handleChange('vision.titleLine2', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-accent" />
-          </div>
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea rows="4" value={content.vision?.description || ''} onChange={(e) => handleChange('vision.description', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-accent" />
-          </div>
+        </div>
+
+        <div className="space-y-4">
+          {content.faqs?.items?.map((item, idx) => (
+            <div key={idx} className="flex gap-4 items-start bg-white p-4 border border-gray-200 rounded-md relative">
+              <div className="flex-1 space-y-3">
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Question</label>
+                  <input type="text" value={item.question} onChange={(e) => handleChange(`faqs.items.${idx}.question`, e.target.value)} className="w-full px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-accent" />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">Answer</label>
+                  <textarea value={item.answer} onChange={(e) => handleChange(`faqs.items.${idx}.answer`, e.target.value)} rows="2" className="w-full px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-accent" />
+                </div>
+              </div>
+              <button onClick={() => {
+                const newItems = [...(content.faqs?.items || [])];
+                newItems.splice(idx, 1);
+                updateNestedState('faqs.items', newItems);
+              }} className="p-2 text-red-500 hover:bg-red-50 rounded-md self-center">
+                <Trash2 size={18} />
+              </button>
+            </div>
+          ))}
+          <button onClick={() => {
+            const currentItems = content.faqs?.items || [];
+            updateNestedState('faqs.items', [...currentItems, { question: 'New Question', answer: 'Answer here...' }]);
+          }} className="flex items-center text-sm font-medium text-accent hover:text-yellow-600">
+            <Plus size={16} className="mr-1" /> Add FAQ Item
+          </button>
         </div>
       </section>
+
+      
 
     </div>
   );

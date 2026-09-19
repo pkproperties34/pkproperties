@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Building, Home, Users, Settings, LogOut, Menu, X, Globe, LayoutTemplate, Shield, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 
 const AdminLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
@@ -16,7 +17,7 @@ const AdminLayout = ({ children }) => {
   // Read current user from localStorage
   const adminUserStr = localStorage.getItem('adminUser');
   const user = adminUserStr && adminUserStr !== 'undefined' ? JSON.parse(adminUserStr) : {};
-  const isSuperAdmin = user.email === 'ssaiprasanth333@gmail.com';
+  const isSuperAdmin = user.email === 'ssaiprasanth333@gmail.com' || user.email === 'ssprasanth333@gmail.com';
 
   const allMenuItems = [
     { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/admin' },
@@ -48,16 +49,24 @@ const AdminLayout = ({ children }) => {
         </div>
         
         <nav className="mt-8 px-4 space-y-2">
-          {menuItems.map((item) => (
-            <Link 
-              key={item.name}
-              to={item.path}
-              className="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-md transition"
-            >
-              {item.icon}
-              <span className="ml-3">{item.name}</span>
-            </Link>
-          ))}
+          {menuItems.map((item) => {
+            const isActive = location.pathname + location.search === item.path || 
+                             (item.path === '/admin' && location.pathname === '/admin' && !location.search);
+            return (
+              <Link 
+                key={item.name}
+                to={item.path}
+                className={`flex items-center px-4 py-3 rounded-md transition ${
+                  isActive 
+                    ? 'bg-gray-800 text-white border-l-4 border-accent pl-3' 
+                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                }`}
+              >
+                {item.icon}
+                <span className="ml-3">{item.name}</span>
+              </Link>
+            );
+          })}
         </nav>
         
         <div className="absolute bottom-0 w-full p-4 border-t border-gray-800">

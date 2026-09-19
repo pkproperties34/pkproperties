@@ -83,6 +83,32 @@ const AdminSettings = () => {
     });
   };
 
+  const handleWhatsappChange = (e) => {
+    setContent({
+      ...content,
+      global: {
+        ...content.global,
+        whatsapp: {
+          ...content.global.whatsapp,
+          [e.target.name]: e.target.value
+        }
+      }
+    });
+  };
+
+  const handleVisibilityChange = (e) => {
+    setContent({
+      ...content,
+      global: {
+        ...content.global,
+        visibility: {
+          ...content.global.visibility,
+          [e.target.name]: e.target.checked
+        }
+      }
+    });
+  };
+
   if (loading || !content) return <div className="p-8 text-center text-gray-500">Loading Settings...</div>;
 
   return (
@@ -117,6 +143,35 @@ const AdminSettings = () => {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Working Hours</label>
                     <textarea name="workingHours" value={content.global?.workingHours || ''} onChange={handleGlobalChange} rows="2" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-accent focus:border-transparent"></textarea>
+                  </div>
+
+                  <h4 className="font-bold text-gray-700 pt-4 border-t">WhatsApp Integration</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp Number (e.g. 919876543210)</label>
+                      <input type="text" name="number" value={content.global?.whatsapp?.number || ''} onChange={handleWhatsappChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-accent focus:border-transparent" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Default Message</label>
+                      <input type="text" name="defaultMessage" value={content.global?.whatsapp?.defaultMessage || ''} onChange={handleWhatsappChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-accent focus:border-transparent" />
+                    </div>
+                  </div>
+
+                  <h4 className="font-bold text-gray-700 pt-4 border-t">Module Visibility</h4>
+                  <p className="text-xs text-gray-500 mb-2">Toggle the visibility of specific modules in the frontend navigation and homepage.</p>
+                  <div className="flex gap-6">
+                    <label className="inline-flex items-center cursor-pointer">
+                      <input type="checkbox" name="projects" checked={content.global?.visibility?.projects ?? true} onChange={handleVisibilityChange} className="form-checkbox h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent" />
+                      <span className="ml-2 text-sm text-gray-700">Show Projects</span>
+                    </label>
+                    <label className="inline-flex items-center cursor-pointer">
+                      <input type="checkbox" name="properties" checked={content.global?.visibility?.properties ?? true} onChange={handleVisibilityChange} className="form-checkbox h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent" />
+                      <span className="ml-2 text-sm text-gray-700">Show Properties</span>
+                    </label>
+                    <label className="inline-flex items-center cursor-pointer">
+                      <input type="checkbox" name="plans" checked={content.global?.visibility?.plans ?? true} onChange={handleVisibilityChange} className="form-checkbox h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent" />
+                      <span className="ml-2 text-sm text-gray-700">Show Plans</span>
+                    </label>
                   </div>
 
                   <h4 className="font-bold text-gray-700 pt-4 border-t">Social Media Links</h4>
