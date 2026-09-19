@@ -13,7 +13,7 @@ const AdminProperties = () => {
     // Fetch all properties (even unpublished ones) for the admin dashboard
     const fetchProperties = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/properties');
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/properties`);
         setProperties(data);
       } catch (error) {
         console.error('Error fetching properties:', error);
@@ -29,7 +29,7 @@ const AdminProperties = () => {
     if (!window.confirm('Are you sure you want to delete this property?')) return;
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.delete(`http://localhost:5000/api/properties/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/properties/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProperties(properties.filter(p => p._id !== id));

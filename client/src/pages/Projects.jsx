@@ -11,7 +11,7 @@ const Projects = () => {
     // Simulating API call for now or connecting to backend if populated
     const fetchProjects = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/projects');
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/projects`);
         setProjects(data);
       } catch (error) {
         console.error('Error fetching projects:', error);

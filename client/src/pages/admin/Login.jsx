@@ -18,7 +18,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/users/login', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, {
         email,
         password
       });
@@ -39,7 +39,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/users/verify-login-otp', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/verify-login-otp`, {
         email,
         otp
       });

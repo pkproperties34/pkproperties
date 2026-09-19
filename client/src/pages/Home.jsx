@@ -37,7 +37,7 @@ const Home = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/content');
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/content`);
         setContent(data);
       } catch (error) {
         console.error('Error fetching site content:', error);

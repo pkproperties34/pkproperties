@@ -20,9 +20,9 @@ const Dashboard = () => {
 
         // Fetch all in parallel
         const [projectsRes, propertiesRes, leadsRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/projects', { headers }).catch(() => ({ data: [] })),
-          axios.get('http://localhost:5000/api/properties', { headers }).catch(() => ({ data: [] })),
-          axios.get('http://localhost:5000/api/leads', { headers }).catch(() => ({ data: [] }))
+          axios.get(`${import.meta.env.VITE_API_URL}/projects`, { headers }).catch(() => ({ data: [] })),
+          axios.get(`${import.meta.env.VITE_API_URL}/properties`, { headers }).catch(() => ({ data: [] })),
+          axios.get(`${import.meta.env.VITE_API_URL}/leads`, { headers }).catch(() => ({ data: [] }))
         ]);
 
         const projects = projectsRes.data || [];

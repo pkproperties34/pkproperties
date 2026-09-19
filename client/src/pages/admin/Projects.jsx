@@ -13,7 +13,7 @@ const AdminProjects = () => {
     // Fetch all projects (even unpublished ones) for the admin dashboard
     const fetchProjects = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/projects');
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/projects`);
         setProjects(data);
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -29,7 +29,7 @@ const AdminProjects = () => {
     if (!window.confirm('Are you sure you want to delete this project?')) return;
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.delete(`http://localhost:5000/api/projects/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/projects/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProjects(projects.filter(p => p._id !== id));

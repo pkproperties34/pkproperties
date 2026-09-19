@@ -11,7 +11,7 @@ const Gallery = () => {
   useEffect(() => {
     const fetchGallery = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/content');
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/content`);
         if (data?.gallery?.images) {
           setImages(data.gallery.images);
         }

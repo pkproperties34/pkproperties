@@ -33,7 +33,7 @@ const ProjectForm = () => {
     if (isEditMode) {
       const fetchProject = async () => {
         try {
-          const { data } = await axios.get(`http://localhost:5000/api/projects/${id}`);
+          const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/projects/${id}`);
           // Populate form
           Object.keys(data).forEach(key => {
             if (key === 'configurations' && Array.isArray(data[key])) {
@@ -62,7 +62,7 @@ const ProjectForm = () => {
 
     try {
       const token = localStorage.getItem('adminToken');
-      const { data } = await axios.post('http://localhost:5000/api/upload', formData, {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`
@@ -90,9 +90,9 @@ const ProjectForm = () => {
       };
 
       if (isEditMode) {
-        await axios.put(`http://localhost:5000/api/projects/${id}`, payload, config);
+        await axios.put(`${import.meta.env.VITE_API_URL}/projects/${id}`, payload, config);
       } else {
-        await axios.post('http://localhost:5000/api/projects', payload, config);
+        await axios.post(`${import.meta.env.VITE_API_URL}/projects`, payload, config);
       }
       
       navigate('/admin/projects');

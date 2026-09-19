@@ -15,7 +15,7 @@ const AdminLeads = () => {
 
   const fetchLeads = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/leads', {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/leads`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
       });
       setLeads(data);
@@ -64,7 +64,7 @@ const AdminLeads = () => {
     setIsUpdating(true);
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.put(`http://localhost:5000/api/leads/${selectedLead._id}`, { status: newStatus }, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/leads/${selectedLead._id}`, { status: newStatus }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       // Update local state
@@ -82,7 +82,7 @@ const AdminLeads = () => {
     setIsUpdating(true);
     try {
       const token = localStorage.getItem('adminToken');
-      const { data } = await axios.post(`http://localhost:5000/api/leads/${selectedLead._id}/notes`, { content: newNote }, {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/leads/${selectedLead._id}/notes`, { content: newNote }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSelectedLead(data);

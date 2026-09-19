@@ -23,13 +23,13 @@ const AdminSettings = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/content');
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/content`);
         setContent(data);
         
         // Fetch developer settings
         const token = localStorage.getItem('adminToken');
         if (token) {
-          const devRes = await axios.get('http://localhost:5000/api/content/developer-settings', {
+          const devRes = await axios.get(`${import.meta.env.VITE_API_URL}/content/developer-settings`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           setDeveloperSettings(devRes.data);
@@ -48,7 +48,7 @@ const AdminSettings = () => {
     setSaving(true);
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.put('http://localhost:5000/api/content', content, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/content`, content, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert('Settings saved successfully!');

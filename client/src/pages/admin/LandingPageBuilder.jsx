@@ -14,7 +14,7 @@ const LandingPageBuilder = () => {
 
   const fetchContent = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/content');
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/content`);
       setContent(data);
     } catch (error) {
       console.error('Failed to fetch content:', error);
@@ -27,7 +27,7 @@ const LandingPageBuilder = () => {
     setSaving(true);
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.put('http://localhost:5000/api/content', content, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/content`, content, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert('Content saved successfully!');
@@ -49,7 +49,7 @@ const LandingPageBuilder = () => {
 
     try {
       const token = localStorage.getItem('adminToken');
-      const { data } = await axios.post('http://localhost:5000/api/upload', formData, {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}` }
       });
       

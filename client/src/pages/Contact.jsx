@@ -15,7 +15,7 @@ const Contact = () => {
   React.useEffect(() => {
     const fetchContent = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/content');
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/content`);
         if (data && data.global) {
           setGlobal(data.global);
         }
@@ -32,7 +32,7 @@ const Contact = () => {
     e.preventDefault();
     setStatus('loading');
     try {
-      await axios.post('http://localhost:5000/api/leads', {
+      await axios.post(`${import.meta.env.VITE_API_URL}/leads`, {
         ...formData,
         source: 'Contact Form'
       });

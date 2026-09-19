@@ -40,7 +40,7 @@ const PropertyForm = () => {
     // Fetch Projects for Dropdown
     const fetchProjects = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/projects');
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/projects`);
         setProjects(data);
       } catch (error) {
         console.error('Failed to fetch projects', error);
@@ -51,7 +51,7 @@ const PropertyForm = () => {
     if (isEditMode) {
       const fetchProperty = async () => {
         try {
-          const { data } = await axios.get(`http://localhost:5000/api/properties/${id}`);
+          const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/properties/${id}`);
           Object.keys(data).forEach(key => {
             if (key === 'project' && data[key]) {
               setValue('project', typeof data[key] === 'object' ? data[key]._id : data[key]);
@@ -81,7 +81,7 @@ const PropertyForm = () => {
 
     try {
       const token = localStorage.getItem('adminToken');
-      const { data } = await axios.post('http://localhost:5000/api/upload', formData, {
+      const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}` }
       });
       
@@ -119,9 +119,9 @@ const PropertyForm = () => {
       };
 
       if (isEditMode) {
-        await axios.put(`http://localhost:5000/api/properties/${id}`, payload, config);
+        await axios.put(`${import.meta.env.VITE_API_URL}/properties/${id}`, payload, config);
       } else {
-        await axios.post('http://localhost:5000/api/properties', payload, config);
+        await axios.post(`${import.meta.env.VITE_API_URL}/properties`, payload, config);
       }
       
       navigate('/admin/properties');

@@ -29,7 +29,7 @@ const UserManagement = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const { data } = await axios.get('http://localhost:5000/api/users', {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(data);
@@ -51,7 +51,7 @@ const UserManagement = () => {
       const token = localStorage.getItem('adminToken');
       const payload = { ...formData, permissions: [] }; // start with no permissions
       
-      await axios.post('http://localhost:5000/api/users', payload, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/users`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -70,7 +70,7 @@ const UserManagement = () => {
     if (!window.confirm('Are you sure you want to remove this admin user?')) return;
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.delete(`http://localhost:5000/api/users/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(users.filter(u => u._id !== id));
@@ -83,7 +83,7 @@ const UserManagement = () => {
     if (!editingPermissionsUser) return;
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.put(`http://localhost:5000/api/users/${editingPermissionsUser._id}`, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/users/${editingPermissionsUser._id}`, {
         permissions: editingPermissionsUser.permissions
       }, {
         headers: { Authorization: `Bearer ${token}` }
