@@ -3,11 +3,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Use Resend instead of Nodemailer for Render compatibility
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend safely to prevent server crash if env var is missing on Render
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+if (!resend) {
+  console.warn('WARNING: RESEND_API_KEY is missing. Email dispatch will be disabled.');
+}
 
 export const sendEmail = async (options) => {
   try {
+    if (!resend) throw new Error('Resend is not configured');
     const data = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
       to: options.email,
@@ -25,6 +29,7 @@ export const sendEmail = async (options) => {
 
 export const sendOTPEmail = async (to, otp, purpose = 'Login') => {
   try {
+    if (!resend) throw new Error('Resend is not configured');
     console.log(`\n======================================================`);
     console.log(`[Development Mode] OTP GENERATED FOR ${to}: ${otp}`);
     console.log(`======================================================\n`);
