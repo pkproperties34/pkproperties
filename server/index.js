@@ -21,7 +21,8 @@ app.use(helmet());
 app.use(cors({
   origin: [
     "https://pkproperties.in",
-    "https://www.pkproperties.in"
+    "https://www.pkproperties.in",
+    "https://pkproperties.vercel.app"
   ],
   credentials: true
 }));
