@@ -11,7 +11,7 @@ export const createLead = async (req, res) => {
     
     // Send email notification to Admin regarding new lead
     if (process.env.SMTP_USER) {
-      sendEmail({
+      await sendEmail({
         email: process.env.ADMIN_EMAIL || process.env.SMTP_USER,
         subject: `New Lead: ${savedLead.type} from ${savedLead.name}`,
         message: `A new lead has been submitted.\n\nName: ${savedLead.name}\nPhone: ${savedLead.phone}\nEmail: ${savedLead.email || 'N/A'}\nSource: ${savedLead.source}\nMessage: ${savedLead.message || 'N/A'}`
