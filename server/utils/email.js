@@ -1,42 +1,36 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  pool: true,
-  maxConnections: 5,
-  maxMessages: 100,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
-});
+// Use Resend instead of Nodemailer for Render compatibility
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendEmail = async (options) => {
   try {
-    const mailOptions = {
-      from: `PK PROPERTIES <${process.env.SMTP_USER}>`,
+    const data = await resend.emails.send({
+      from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
       to: options.email,
       subject: options.subject,
       text: options.message,
       html: options.html,
-    };
-
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Message sent: %s', info.messageId);
+    });
+    console.log('Message sent via Resend:', data.id);
     return true;
   } catch (error) {
-    console.error('Email could not be sent:', error);
+    console.error('Email could not be sent via Resend:', error);
     return false;
   }
 };
 
 export const sendOTPEmail = async (to, otp, purpose = 'Login') => {
   try {
-    const mailOptions = {
-      from: `PK PROPERTIES <${process.env.SMTP_USER}>`,
+    console.log(`\n======================================================`);
+    console.log(`[Development Mode] OTP GENERATED FOR ${to}: ${otp}`);
+    console.log(`======================================================\n`);
+
+    const data = await resend.emails.send({
+      from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
       to,
       subject: `Your PK Properties ${purpose} OTP`,
       html: `
@@ -54,17 +48,12 @@ export const sendOTPEmail = async (to, otp, purpose = 'Login') => {
           <p style="color: #999; font-size: 12px; text-align: center;">If you did not request this, please ignore this email.</p>
         </div>
       `
-    };
-
-    console.log(`\n======================================================`);
-    console.log(`[Development Mode] OTP GENERATED FOR ${to}: ${otp}`);
-    console.log(`======================================================\n`);
-
-    const info = await transporter.sendMail(mailOptions);
-    console.log(`[Development] OTP email dispatched. MessageId: ${info.messageId}`);
+    });
+    
+    console.log(`[Production] OTP email dispatched via Resend. MessageId: ${data?.id}`);
     return true;
   } catch (err) {
-    console.error('Error sending OTP via Nodemailer:', err);
+    console.error('Error sending OTP via Resend:', err);
     return false;
   }
 };
