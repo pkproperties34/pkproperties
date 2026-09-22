@@ -36,8 +36,8 @@ export const login = async (req, res) => {
     user.loginOtpExpires = Date.now() + 15 * 60 * 1000; // 15 mins
     await user.save({ validateBeforeSave: false });
 
-    // Send email
-    await sendOTPEmail(user.email, otp, 'Login');
+    // Send email without awaiting to speed up response
+    sendOTPEmail(user.email, otp, 'Login').catch(err => console.error('Background OTP email failed:', err));
     
     res.status(200).json({
       requiresOtp: true,
@@ -118,7 +118,7 @@ export const forgotPassword = async (req, res) => {
     
     await user.save({ validateBeforeSave: false });
     
-    await sendOTPEmail(user.email, otp, 'Password Reset');
+    sendOTPEmail(user.email, otp, 'Password Reset').catch(err => console.error('Background OTP email failed:', err));
     
     res.status(200).json({ message: genericMessage });
   } catch (error) {
