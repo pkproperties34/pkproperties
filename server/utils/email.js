@@ -21,11 +21,11 @@ export const sendEmail = async (options) => {
     });
     
     if (error) {
-      console.error('Resend API Error:', error);
+      console.error('Resend API Error details:', error);
       return false;
     }
     
-    console.log('Message sent via Resend:', data?.id);
+    console.log('Message sent via Resend:', data.id);
     return true;
   } catch (error) {
     console.error('Email could not be sent via Resend:', error);
@@ -62,7 +62,7 @@ export const sendOTPEmail = async (to, otp, purpose = 'Login') => {
     });
     
     if (error) {
-      console.error('Resend API Error (OTP):', error);
+      console.error('Resend API Error details:', error);
       return false;
     }
     
