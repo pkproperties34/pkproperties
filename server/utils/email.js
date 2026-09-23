@@ -12,14 +12,20 @@ if (!resend) {
 export const sendEmail = async (options) => {
   try {
     if (!resend) throw new Error('Resend is not configured');
-    const data = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
       to: options.email,
       subject: options.subject,
       text: options.message,
       html: options.html,
     });
-    console.log('Message sent via Resend:', data.id);
+    
+    if (error) {
+      console.error('Resend API Error:', error);
+      return false;
+    }
+    
+    console.log('Message sent via Resend:', data?.id);
     return true;
   } catch (error) {
     console.error('Email could not be sent via Resend:', error);
@@ -34,7 +40,7 @@ export const sendOTPEmail = async (to, otp, purpose = 'Login') => {
     console.log(`[Development Mode] OTP GENERATED FOR ${to}: ${otp}`);
     console.log(`======================================================\n`);
 
-    const data = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
       to,
       subject: `Your PK Properties ${purpose} OTP`,
@@ -54,6 +60,11 @@ export const sendOTPEmail = async (to, otp, purpose = 'Login') => {
         </div>
       `
     });
+    
+    if (error) {
+      console.error('Resend API Error (OTP):', error);
+      return false;
+    }
     
     console.log(`[Production] OTP email dispatched via Resend. MessageId: ${data?.id}`);
     return true;
